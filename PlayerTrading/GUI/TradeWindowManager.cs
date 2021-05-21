@@ -63,6 +63,7 @@ namespace PlayerTrading.GUI
             _toTradeWindow = gameObject.AddComponent<ContainerTradeWindow>();
             _toTradeWindow.Initialise("You Will Give", TradeWindow.WindowPositionType.LEFT);
             _toTradeWindow.Hide();  
+
         }
 
         private void InitialiseButtons()
@@ -96,12 +97,16 @@ namespace PlayerTrading.GUI
             float newY = (newX / (16 / 9));
             transform.localScale = new Vector3(newX, newY, transform.localScale.z);
 
-
             _acceptTradeButton.name = AcceptButtonText;
             _acceptTradeButton.GetComponentInChildren<Text>().text = AcceptButtonText;
             _acceptTradeButton.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
             _acceptTradeButton.GetComponent<Button>().onClick.AddListener(AcceptButtonClicked);
             _acceptTradeButtonGO.SetActive(false);
+
+            UIGamePad uiGamepad = _acceptTradeButtonGO.GetComponent<UIGamePad>();
+            uiGamepad.m_zinputKey = "JoyButtonX";
+            uiGamepad.m_group = _toTradeWindow.GetUIGroupHandler();
+            _acceptTradeButtonGO.transform.Find("gamepad_hint").GetComponentInChildren<Text>().text = "X";
 
             // Cancel Button 
             _cancelTradeButtonGO = Instantiate(buttonPrefab);
@@ -130,6 +135,11 @@ namespace PlayerTrading.GUI
             _cancelTradeButton.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
             _cancelTradeButton.GetComponent<Button>().onClick.AddListener(CancelButtonClicked);
             _cancelTradeButtonGO.SetActive(false);
+
+            uiGamepad = _cancelTradeButtonGO.GetComponent<UIGamePad>();
+            uiGamepad.m_zinputKey = "JoyButtonB";
+            uiGamepad.m_group = _toTradeWindow.GetUIGroupHandler();
+            _cancelTradeButtonGO.transform.Find("gamepad_hint").GetComponentInChildren<Text>().text = "B";
         }
 
         private void AcceptButtonClicked()

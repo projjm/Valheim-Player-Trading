@@ -149,5 +149,10 @@ namespace PlayerTrading.GUI
         {
             ResetPosition();
         }
+
+        public override UIGroupHandler GetUIGroupHandler()
+        {
+            return TradeWindowGUIRT.GetComponent<UIGroupHandler>();
+        }
     }
 }

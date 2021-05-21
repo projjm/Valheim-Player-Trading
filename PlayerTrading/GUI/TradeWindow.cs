@@ -76,6 +76,8 @@ namespace PlayerTrading.GUI
 
         public abstract void SetAsAccepted(bool accepted);
 
+        public abstract UIGroupHandler GetUIGroupHandler();
+
         protected void SetDefaultPosition()
         {
             _defaultRTAnchorMin = TradeWindowGUIRT.anchorMin;

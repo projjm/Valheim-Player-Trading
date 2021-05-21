@@ -5,6 +5,36 @@ namespace PlayerTrading.Patches
 {
 	class InventoryGuiPatches
 	{
+
+		[HarmonyPriority(9999)]
+		[HarmonyPatch(typeof(InventoryGui), nameof(InventoryGui.UpdateGamepad))]
+		class GamepadSupportTrade
+		{
+			public static bool Prefix(InventoryGui __instance)
+			{
+				if (__instance.m_currentContainer != null || !TradeHandler.Instance.HasTradeInstance())
+					return true;
+
+				if (__instance.m_inventoryGroup.IsActive())
+				{
+					if (ZInput.GetButtonDown("JoyTabLeft"))
+					{
+						__instance.SetActiveGroup(1);
+					}
+					if (ZInput.GetButtonDown("JoyTabRight"))
+					{
+						__instance.SetActiveGroup(0);
+					}
+					if (__instance.m_activeGroup != 0 && __instance.m_activeGroup != 1)
+					{
+						__instance.SetActiveGroup(1);
+					}
+				}
+
+				return false;
+			}
+		}
+
 		[HarmonyPriority(9999)]
 		[HarmonyPatch(typeof(InventoryGui), nameof(InventoryGui.Show))]
 		class ShowHUDExtraElementsFix

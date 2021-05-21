@@ -170,7 +170,7 @@ namespace PlayerTrading
             if (_currentTradeInstance == null)
             {
                 _currentTradeInstance = gameObject.AddComponent<TradeInstance>();
-                _currentTradeInstance.StartTrade(_localPlayer, otherPlayer);
+                _currentTradeInstance.StartTrade(Player.m_localPlayer, otherPlayer);
             }
             else
             {

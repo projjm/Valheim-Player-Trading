@@ -50,6 +50,10 @@ namespace PlayerTrading.GUI
             _containerHUD.transform.Find("container_name").GetComponent<Text>().text = Name;
             _containerHUD.transform.Find("TakeAll").gameObject.SetActive(false);
 
+            UIGroupHandler UIGhandler = _containerHUD.GetComponent<UIGroupHandler>();
+            UIGhandler.ResetActiveElement();
+            UIGhandler.SetActive(false);
+
             WindowInventory.UpdateTotalWeight();
         }
 
@@ -140,5 +144,9 @@ namespace PlayerTrading.GUI
             ResetPosition();
         }
 
+        public override UIGroupHandler GetUIGroupHandler()
+        {
+            return _containerHUD.GetComponent<UIGroupHandler>();
+        }
     }
 }

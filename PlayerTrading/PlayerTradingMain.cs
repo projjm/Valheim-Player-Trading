@@ -7,7 +7,7 @@ using System;
 namespace PlayerTrading
 {
 
-    [BepInPlugin("projjm.playerTrading", "Player Trading", "1.0.0")]
+    [BepInPlugin("projjm.playerTrading", "Player Trading", "1.0.1")]
     public class PlayerTradingMain : BaseUnityPlugin
     {
         internal readonly Harmony harmony = new Harmony("projjm.playerTrading");

@@ -87,8 +87,8 @@ namespace PlayerTrading
         {
             _localPlayer = localPlayer;
             _otherPlayer = otherPlayer;
-            TradeWindowManager.Instance.StartNewInstance();
             StoreReferences();
+            TradeWindowManager.Instance.StartNewInstance();
         }
 
 
@@ -117,6 +117,9 @@ namespace PlayerTrading
 
         private void CheckTradeDistance()
         {
+            if (_localPlayerTransform == null || _otherPlayerTransform == null)
+                return;
+
             float distance = Vector3.Distance(_localPlayerTransform.position, _otherPlayerTransform.position);
             if (distance > _maxDistance)
                 DestroyInstance();
@@ -240,7 +243,7 @@ namespace PlayerTrading
         public void OnNewLocalPlayer()
         {
             _localPlayer = Player.m_localPlayer;
-            _otherPlayerTransform = _localPlayer.transform;
+            _localPlayerTransform = _localPlayer.transform;
         }
 
         #endregion
