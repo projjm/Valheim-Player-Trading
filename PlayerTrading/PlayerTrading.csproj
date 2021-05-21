@@ -74,6 +74,9 @@
     <Reference Include="UnityEngine.PhysicsModule">
       <HintPath>Libs\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>Libs\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Libs\UnityEngine.UI.dll</HintPath>
     </Reference>
@@ -86,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Patches\InventoryPatches.cs" />
+    <Compile Include="Patches\MessageHudPatches.cs" />
     <Compile Include="Tools\HUDTools.cs" />
     <Compile Include="Patches\InventoryGuiPatches.cs" />
     <Compile Include="Patterns\MonoSingleton.cs" />

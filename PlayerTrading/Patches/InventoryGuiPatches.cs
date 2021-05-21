@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace PlayerTrading.Patches
 {
-
 	class InventoryGuiPatches
 	{
 		[HarmonyPriority(9999)]
