@@ -43,8 +43,11 @@ If you discover a mod incompatibility then I will attempt to make it compatible.
 ![alt text](https://i.imgur.com/2rqd5SN.png "Screenshot 4")
 
 # Changelog
-
+        Version 1.1.0
+            Added Window Edit Mode - toggled on/off using F11 (configurable).
+            Fixed bug where inventory grid misaligns when using custom Valheim Plus inventory config.
+            Disable E (interact) closing the current trade instance.
         Version 1.0.1
             Added Gamepad support.
         Version 1.0.0
-            Player Trading initial release
+            Player Trading initial release.
