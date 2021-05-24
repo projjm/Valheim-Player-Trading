@@ -22,6 +22,7 @@ You must have **BepinEx** installed before attempting to install this mod.
 Move the **.dll file** into your **Valheim\BepInEx\plugins** folder.
 
 In order to configure the trade UI window placement, press **F11** (default key) and drag the windows/buttons to their desired location.
+While in placement mode, elements that can be moved will be highlighted purple.
 
 # Feedback
 
