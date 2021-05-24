@@ -1,12 +1,12 @@
 # Valheim - Player Trading
 
-![alt text](https://i.imgur.com/VH4NsHk.png "About")
+# About
 
 Tired of throwing your items to other players? This mod implements real trading between players. In order to start a new trade instance, you must first **interact** with the target player to send them a **trade request**. If the other player **accepts your trade request** (by also interacting with you), the instance will start.
 
 During the trade instance, two windows will be visible, the first window will hold the **items you wish to offer**, the second will be a preview of the **items you will receive**. Once a player is happy with the trade they can choose to **Accept**, **both players** must have accepted before the trade can be finalized. Any changes to the trade will automatically reset both player's Accept state in order to prevent malicious behaviour.
 
-![alt text](https://i.imgur.com/uaa233Y.png "Features")
+# Features
 
 * Quick and easy trading between players.
 * Client-side only! No server installations needed.
@@ -15,12 +15,12 @@ During the trade instance, two windows will be visible, the first window will ho
 * Full and continued gamepad support.
 * Familiar keybinds will continue to work! (Splitting stacks, Quick-Select etc).
 
-![alt text](https://i.imgur.com/Z2jExpE.png "Installation")
+# Installation
 
 You must have **BepinEx** installed before attempting to install this mod.
 Move the **.dll file** into your **Valheim\BepInEx\plugins** folder.
 
-![alt text](https://i.imgur.com/RO5rPvN.png "Feedback")
+# Feedback
 
 I appreciate any feedback that you might have. If you encounter a bug please report it whenever you can so that I can fix it in the following update.
 If you discover a mod incompatibility then I will attempt to make it compatible. Thanks!
