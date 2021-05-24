@@ -11,6 +11,7 @@ During the trade instance, two windows will be visible, the first window will ho
 * Quick and easy trading between players.
 * Client-side only! No server installations needed.
 * Works with custom items!
+* Configure the mod UI by pressing F11 (key is configurable)
 * Use it anywhere! As long as the player you're trading also has the mod installed.
 * Full and continued gamepad support.
 * Familiar keybinds will continue to work! (Splitting stacks, Quick-Select etc).
@@ -19,6 +20,8 @@ During the trade instance, two windows will be visible, the first window will ho
 
 You must have **BepinEx** installed before attempting to install this mod.
 Move the **.dll file** into your **Valheim\BepInEx\plugins** folder.
+
+In order to configure the trade UI window placement, press **F11** (default key) and drag the windows/buttons to their desired location.
 
 # Feedback
 
