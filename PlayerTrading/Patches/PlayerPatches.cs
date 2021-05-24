@@ -10,7 +10,7 @@ namespace PlayerTrading.Patches
         {
             public static void Postfix(Player __instance, ref string __result)
             {
-                if (TradeHandler.Instance.HasTradeInstance() || __instance == Player.m_localPlayer)
+                if (TradeHandler.Instance.IsTradeWindowsOpen() || __instance == Player.m_localPlayer)
                     return;
 
                 string action = TradeHandler.Instance.GetAction(__instance);
@@ -23,12 +23,16 @@ namespace PlayerTrading.Patches
         {
             public static void Postfix(GameObject go)
             {
-                if (!TradeHandler.Instance.HasTradeInstance())
+                if (!TradeHandler.Instance.IsTradeWindowsOpen())
                     return;
 
                 Interactable componentInParent = go.GetComponentInParent<Interactable>();
                 if (componentInParent != null)
+                {
                     TradeHandler.Instance.TryCancelTradeInstance();
+                    TradeHandler.Instance.TryCancelWindowEditMode();
+                }
+
             }
 
         }

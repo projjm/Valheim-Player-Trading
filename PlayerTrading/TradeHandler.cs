@@ -12,6 +12,7 @@ namespace PlayerTrading
         private HashSet<Player> _tradeRequestsSent = new HashSet<Player>();
         private HashSet<Player> _tradeRequestsReceived = new HashSet<Player>();
         private TradeInstance _currentTradeInstance;
+        private KeyCode _editModeKey;
 
         private bool _tradeManagerInitialised;
         private const float TradeRequestDuration = 10.0f;
@@ -21,6 +22,7 @@ namespace PlayerTrading
         {
             RegisterRPCs();
             SubscribeToEvents();
+            _editModeKey = PlayerTradingMain.EditWindowLayoutKey.Value;
         }
 
         private void RegisterRPCs()
@@ -66,9 +68,14 @@ namespace PlayerTrading
         {
             if (ZInput.GetButtonDown("Use") || ZInput.GetButtonDown("JoyUse"))
                 TrySendTradeRequest();
+
+            if (Input.GetKeyDown(_editModeKey))
+                TradeWindowManager.Instance.ToggleWindowPositionMode();
         }
 
-        public bool HasTradeInstance() => _currentTradeInstance != null;
+        public bool IsTradeWindowsOpen() => _currentTradeInstance != null || (TradeWindowManager.Instance && TradeWindowManager.Instance.IsInWindowPositionMode());
+
+        public bool InTradeInstance() => _currentTradeInstance != null;
 
         public float GetMaxDistance() => MaxTradeDistance;
 
@@ -101,6 +108,11 @@ namespace PlayerTrading
             {
                 Destroy(_currentTradeInstance);
             }
+        }
+
+        public void TryCancelWindowEditMode()
+        {
+            TradeWindowManager.Instance.DisableWindowPositionMode();
         }
 
         private void TrySendTradeRequest()

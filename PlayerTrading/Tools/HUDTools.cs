@@ -29,6 +29,7 @@ namespace PlayerTrading
             }
         }
 
+        /*
         public static void InventoryGui_ForceShow()
         {
             InventoryGui gui = InventoryGui.m_instance;
@@ -49,7 +50,7 @@ namespace PlayerTrading
             }
             Gogan.LogEvent("Screen", "Enter", "Inventory", 0L);
         }
-
+        /
         public static void InventoryGui_ForceHide()
         {
             InventoryGui gui = InventoryGui.m_instance;
@@ -71,7 +72,7 @@ namespace PlayerTrading
                 Gogan.LogEvent("Screen", "Exit", "Inventory", 0L);
             }
         }
-
+       
         public static void InventoryGui_ForceCloseContainer()
         {
             InventoryGui gui = InventoryGui.m_instance;
@@ -84,6 +85,8 @@ namespace PlayerTrading
             gui.m_firstContainerUpdate = true;
             gui.m_container.gameObject.SetActive(value: false);
         }
+
+     */
 
     }
 }

@@ -88,6 +88,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI\TradeButton.cs" />
     <Compile Include="Patches\InventoryPatches.cs" />
     <Compile Include="Patches\MessageHudPatches.cs" />
     <Compile Include="Tools\HUDTools.cs" />

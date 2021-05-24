@@ -17,6 +17,7 @@ namespace PlayerTrading.GUI
         private const int WindowWidth = 6;
         private const int WindowHeight = 4;
         private Text _inventoryWeight;
+        private bool _isMovingWindow;
 
         public override void Initialise(string tradeWindowName, WindowPositionType windowPosition)
         {
@@ -29,12 +30,41 @@ namespace PlayerTrading.GUI
             Initialised = true;
         }
 
+        private void Update()
+        {
+            if (WindowEditMode)
+                UpdateWindowEditMode();
+        }
+
+        private void UpdateWindowEditMode()
+        {
+            Vector2 localMousePosition = TradeWindowGUIRT.InverseTransformPoint(Input.mousePosition);
+            if (Input.GetMouseButtonDown(0) && TradeWindowGUIRT.rect.Contains(localMousePosition))
+            {
+                _isMovingWindow = true;
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                _isMovingWindow = false;
+                SaveUserOffsets();
+            }
+
+            if (_isMovingWindow)
+                AddUserOffsets(Input.GetAxis("Mouse X") * WindowEditMoveSpeed, -Input.GetAxis("Mouse Y") * WindowEditMoveSpeed);
+
+        }
+
         private void StoreReferences()
         {
             LocalPlayer = Player.m_localPlayer;
             TradeWindowGUIRT = _containerHUD.GetComponent<RectTransform>();
             WindowBackground = TradeWindowGUIRT.transform.Find("Bkg").GetComponent<Image>();
             OriginalBkgColor = WindowBackground.color;
+        }
+
+        private void SaveUserOffsets()
+        {
+            PlayerTradingMain.ToReceiveUserOffset.Value = GetUserOffsets();
         }
 
         private void SetupWindow()
@@ -147,6 +177,21 @@ namespace PlayerTrading.GUI
         public override UIGroupHandler GetUIGroupHandler()
         {
             return _containerHUD.GetComponent<UIGroupHandler>();
+        }
+
+        public override void SetAsWindowEditMode(bool modeOn)
+        {
+            WindowEditMode = modeOn;
+
+            if (modeOn)
+            {
+                WindowBackground.color = Color.Lerp(OriginalBkgColor, Color.magenta, 0.35f);
+            }
+            else
+            {
+                WindowBackground.color = OriginalBkgColor;
+                SaveUserOffsets();
+            }      
         }
     }
 }

@@ -9,7 +9,7 @@ namespace PlayerTrading.Patches
 		{
 			public static void Postfix(Inventory __instance)
 			{
-				if (TradeHandler.Instance == null || !TradeHandler.Instance.HasTradeInstance())
+				if (TradeHandler.Instance == null || !TradeHandler.Instance.IsTradeWindowsOpen())
 					return;
 
 				if (__instance == TradeHandler.Instance.TryGetToTradeInventory())

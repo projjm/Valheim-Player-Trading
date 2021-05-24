@@ -13,6 +13,7 @@ namespace PlayerTrading.GUI
         private RectTransform _gridRoot;
         private InventoryGrid _grid;
         private bool _flipped;
+        private bool _isMovingWindow;
 
         public override void Initialise(string tradeWindowName, WindowPositionType windowPosition)
         {
@@ -22,6 +23,30 @@ namespace PlayerTrading.GUI
             SetUpLocalInventory();
             SetDefaultPosition();
             UpdatePosition();
+        }
+
+        private void Update()
+        {
+            if (WindowEditMode)
+                UpdateWindowEditMode();
+        }
+
+        private void UpdateWindowEditMode()
+        {
+            Vector2 localMousePosition = TradeWindowGUIRT.InverseTransformPoint(Input.mousePosition);
+            if (Input.GetMouseButtonDown(0) && TradeWindowGUIRT.rect.Contains(localMousePosition))
+            {
+                _isMovingWindow = true;
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                _isMovingWindow = false;
+                SaveUserOffsets();
+            }
+
+            if (_isMovingWindow)
+                AddUserOffsets(-Input.GetAxis("Mouse X") * WindowEditMoveSpeed, -Input.GetAxis("Mouse Y") * WindowEditMoveSpeed);
+
         }
 
         private void LateUpdate()
@@ -38,6 +63,11 @@ namespace PlayerTrading.GUI
             WindowBackground = TradeWindowGUIRT.transform.Find("Bkg").GetComponent<Image>();
             OriginalBkgColor = WindowBackground.color;
             _takeAllButtonTransform = TradeWindowGUIRT.Find("TakeAll").GetComponent<RectTransform>();
+        }
+
+        private void SaveUserOffsets()
+        {
+            PlayerTradingMain.ToGiveUserOffset.Value = GetUserOffsets();
         }
 
         private void SetUpLocalInventory()
@@ -88,7 +118,7 @@ namespace PlayerTrading.GUI
             InventoryGui.m_instance.m_containerName.text = Name;
             UpdatePosition();
             WindowActive = true;
-            HUDTools.InventoryGui_ForceShow();
+            InventoryGui.instance.Show(null);
         }
 
         public override void Hide()
@@ -101,7 +131,8 @@ namespace PlayerTrading.GUI
 
             ResetPosition();
             WindowActive = false;
-            HUDTools.InventoryGui_ForceCloseContainer();
+            InventoryGui.instance.CloseContainer();
+            InventoryGui.instance.Hide();
         }
 
         private void FlipHUD()
@@ -118,7 +149,7 @@ namespace PlayerTrading.GUI
             TradeWindowGUIRT = null;
             WindowActive = false;
             Initialised = false;
-            HUDTools.InventoryGui_ForceCloseContainer();
+            InventoryGui.instance.CloseContainer();
         }
 
         public override void OnTradeCancelled()
@@ -154,5 +185,22 @@ namespace PlayerTrading.GUI
         {
             return TradeWindowGUIRT.GetComponent<UIGroupHandler>();
         }
+
+        public override void SetAsWindowEditMode(bool modeOn)
+        {
+            WindowEditMode = modeOn;
+
+            if (modeOn)
+            {
+                WindowBackground.color = Color.Lerp(OriginalBkgColor, Color.magenta, 0.35f);
+            }
+            else
+            {
+                WindowBackground.color = OriginalBkgColor;
+                SaveUserOffsets();
+            }
+        }
+
+
     }
 }

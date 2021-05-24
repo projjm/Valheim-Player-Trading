@@ -21,10 +21,17 @@ namespace PlayerTrading.GUI
         protected Inventory WindowInventory { get; set; }
         protected Image WindowBackground { get; set; }
         protected Color OriginalBkgColor { get; set; }
+        protected bool WindowEditMode { get; set; }
+
+        protected const float WindowEditMoveSpeed = 8f;
+
+        private float _userXOffset = 0f;
+        private float _userYOffset = 0f;
 
         private Vector2 _defaultRTAnchorMin;
         private Vector2 _defaultRTAnchorMax;
         private Vector2 _defaultRTAnchorPos;
+
 
         private void Awake() {}
 
@@ -52,6 +59,22 @@ namespace PlayerTrading.GUI
 
         public bool IsActive() => WindowActive;
 
+        public void SetUserOffsets(float userXOffset, float userYOffset)
+        {
+            _userXOffset = userXOffset;
+            _userYOffset = userYOffset;
+            UpdatePosition();
+        }
+
+        protected void AddUserOffsets(float userXOffset, float userYOffset)
+        {
+            _userXOffset += userXOffset;
+            _userYOffset += userYOffset;
+            UpdatePosition();
+        }
+
+        protected Vector2 GetUserOffsets() => new Vector2(_userXOffset, _userYOffset);
+
         public Inventory GetInventory() => WindowInventory;
 
         public abstract void Initialise(string tradeWindowName, WindowPositionType windowPosition);
@@ -76,6 +99,8 @@ namespace PlayerTrading.GUI
 
         public abstract void SetAsAccepted(bool accepted);
 
+        public abstract void SetAsWindowEditMode(bool modeOn);
+
         public abstract UIGroupHandler GetUIGroupHandler();
 
         protected void SetDefaultPosition()
@@ -92,8 +117,8 @@ namespace PlayerTrading.GUI
 
             float guiScale = PlayerPrefs.GetFloat("GuiScale", 1f);
 
-            float xOffset = (Screen.width / 30f) * guiScale;
-            float yOffset = (Screen.height / 30f) * guiScale;
+            float xOffset = (Screen.width / 30f) * guiScale + _userXOffset;
+            float yOffset = (Screen.height / 30f) * guiScale + _userYOffset;
 
             switch (WindowPosition)
             {

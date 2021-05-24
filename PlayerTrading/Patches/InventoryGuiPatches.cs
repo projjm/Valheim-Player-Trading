@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using PlayerTrading.GUI;
 using UnityEngine;
 
 namespace PlayerTrading.Patches
@@ -12,7 +13,7 @@ namespace PlayerTrading.Patches
 		{
 			public static bool Prefix(InventoryGui __instance)
 			{
-				if (__instance.m_currentContainer != null || !TradeHandler.Instance.HasTradeInstance())
+				if (__instance.m_currentContainer != null || (!TradeHandler.Instance || !TradeHandler.Instance.IsTradeWindowsOpen()))
 					return true;
 
 				if (__instance.m_inventoryGroup.IsActive())
@@ -41,7 +42,7 @@ namespace PlayerTrading.Patches
 		{
 			public static void Prefix()
 			{
-				if (!TradeHandler.Instance.HasTradeInstance())
+				if (!TradeHandler.Instance.IsTradeWindowsOpen())
 				{
 					HUDTools.SetHUDsActive(true);
 					InventoryGui.instance.m_animator.speed = 1f;
@@ -49,14 +50,30 @@ namespace PlayerTrading.Patches
 			}
 		}
 
+
+		[HarmonyPriority(9999)]
+		[HarmonyPatch(typeof(InventoryGui), nameof(InventoryGui.Update))]
+		public class InteractCancelTradeFix
+		{
+			public static void Prefix()
+			{
+				if (TradeHandler.Instance && TradeHandler.Instance.IsTradeWindowsOpen())
+					ZInput.ResetButtonStatus("Use"); // Prevent Use from closing trade instance
+			}
+		}
+
+
 		[HarmonyPriority(9999)]
 		[HarmonyPatch(typeof(InventoryGui), nameof(InventoryGui.Hide))]
 		class HideHUDCancelTrade
 		{
 			public static void Prefix()
 			{
-				if (TradeHandler.Instance.HasTradeInstance())
+				if (TradeHandler.Instance.IsTradeWindowsOpen())
+				{
 					TradeHandler.Instance.TryCancelTradeInstance();
+					TradeHandler.Instance.TryCancelWindowEditMode();
+				}
 			}
 		}
 
@@ -66,10 +83,16 @@ namespace PlayerTrading.Patches
         {
             public static bool Prefix(InventoryGui __instance)
             {
-				if (__instance.m_currentContainer != null || !TradeHandler.Instance.HasTradeInstance())
+				if (__instance.m_currentContainer != null || !TradeHandler.Instance.IsTradeWindowsOpen())
                     return true;
 
-                int num = Mathf.CeilToInt(TradeHandler.Instance.TryGetToTradeInventory().GetTotalWeight());
+				Inventory inv;
+				if (TradeHandler.Instance.InTradeInstance())
+					inv = TradeHandler.Instance.TryGetToTradeInventory();
+				else
+					inv = TradeWindowManager.Instance.GetToTradeInventory();
+
+				int num = Mathf.CeilToInt(inv.GetTotalWeight());
                 __instance.m_containerWeight.text = num.ToString();
 
                 return false;
@@ -83,10 +106,14 @@ namespace PlayerTrading.Patches
         {
             public static bool Prefix(InventoryGui __instance)
             {
-                if (__instance.m_currentContainer != null || !TradeHandler.Instance.HasTradeInstance())
+                if (__instance.m_currentContainer != null || !TradeHandler.Instance.IsTradeWindowsOpen())
                     return true;
 
-				Inventory inv = TradeHandler.Instance.TryGetToTradeInventory();
+				Inventory inv;
+				if (TradeHandler.Instance.InTradeInstance())
+					inv = TradeHandler.Instance.TryGetToTradeInventory();
+				else
+					inv = TradeWindowManager.Instance.GetToTradeInventory();
 
 				if (!__instance.m_animator.GetBool("visible"))
                 {
@@ -113,10 +140,14 @@ namespace PlayerTrading.Patches
         {
             public static bool Prefix(InventoryGui __instance)
             {
-                if (__instance.m_currentContainer != null || !TradeHandler.Instance.HasTradeInstance())
+                if (__instance.m_currentContainer != null || !TradeHandler.Instance.IsTradeWindowsOpen())
                     return true;
 
-                Inventory inv = TradeHandler.Instance.TryGetToTradeInventory();
+				Inventory inv;
+				if (TradeHandler.Instance.InTradeInstance())
+					inv = TradeHandler.Instance.TryGetToTradeInventory();
+				else
+					inv = TradeWindowManager.Instance.GetToTradeInventory();
 
 				if (!Player.m_localPlayer.IsTeleporting())
                 {
@@ -136,10 +167,14 @@ namespace PlayerTrading.Patches
         {
             public static bool Prefix(InventoryGui __instance, InventoryGrid grid, ItemDrop.ItemData item, Vector2i pos, InventoryGrid.Modifier mod)
             {
-                if (__instance.m_currentContainer != null || !TradeHandler.Instance.HasTradeInstance())
+                if (__instance.m_currentContainer != null || !TradeHandler.Instance.IsTradeWindowsOpen())
                     return true;
 
-                Inventory inv = TradeHandler.Instance.TryGetToTradeInventory();
+				Inventory inv;
+				if (TradeHandler.Instance.InTradeInstance())
+					inv = TradeHandler.Instance.TryGetToTradeInventory();
+				else
+					inv = TradeWindowManager.Instance.GetToTradeInventory();
 
 				Player localPlayer = Player.m_localPlayer;
 				if (localPlayer.IsTeleporting())
@@ -249,7 +284,7 @@ namespace PlayerTrading.Patches
 		{
 			public static bool Prefix(InventoryGui __instance, ref bool __result)
 			{
-				if (__instance.m_currentContainer != null || !TradeHandler.Instance.HasTradeInstance())
+				if (__instance.m_currentContainer != null || !TradeHandler.Instance.IsTradeWindowsOpen())
 					return true;
 
 				__result = true;
