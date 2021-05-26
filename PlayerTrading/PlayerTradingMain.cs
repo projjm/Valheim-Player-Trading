@@ -7,17 +7,26 @@ using BepInEx.Configuration;
 
 namespace PlayerTrading
 {
+    public enum ModifierKey
+    {
+        NONE,
+        CTRL,
+        ALT,
+
+    }
 
     [BepInPlugin("projjm.playerTrading", "Player Trading", "1.1.0")]
     public class PlayerTradingMain : BaseUnityPlugin
     {
+        public static ConfigEntry<bool> UseModifierKey;
+        public static ConfigEntry<KeyCode> ModifierKey;
         public static ConfigEntry<KeyCode> EditWindowLayoutKey;
         public static ConfigEntry<Vector2> ToGiveUserOffset;
         public static ConfigEntry<Vector2> ToReceiveUserOffset;
         public static ConfigEntry<Vector2> AcceptButtonUserOffset;
         public static ConfigEntry<Vector2> CancelButtonUserOffset;
 
-
+        
         internal readonly Harmony harmony = new Harmony("projjm.playerTrading");
         internal Assembly assembly;
         internal static event Action OnLocalPlayerChanged;
@@ -33,6 +42,8 @@ namespace PlayerTrading
 
         private void BindConfigs()
         {
+            UseModifierKey = Config.Bind("Keybinds", "useModifierKey", false, "Should sending/receiving trade requests require a modifier key to be held");
+            ModifierKey = Config.Bind("Keybinds", "modifierKey", KeyCode.LeftAlt, "The modifier key that needs to be held if useModifierKey is set to true");
             ToGiveUserOffset = Config.Bind("Offsets", "toGiveUserOffset", Vector2.zero, "Offset values for To Give trade window (Set to nothing to reset position)");
             ToReceiveUserOffset = Config.Bind("Offsets", "toReceiveUserOffset", Vector2.zero, "Offset values for To Receive trade window (Set to nothing to reset position)");
             AcceptButtonUserOffset = Config.Bind("Offsets", "acceptButtonUserOffset", Vector2.zero, "Offset values for the Accept Trade button (Set to nothing to reset position)");
