@@ -11,6 +11,7 @@ During the trade instance, two windows will be visible, the first window will ho
 * Quick and easy trading between players.
 * Client-side only! No server installations needed.
 * Works with custom items!
+* Configure the mod UI by pressing F11 (key is configurable)
 * Use it anywhere! As long as the player you're trading also has the mod installed.
 * Full and continued gamepad support.
 * Familiar keybinds will continue to work! (Splitting stacks, Quick-Select etc).
@@ -19,6 +20,9 @@ During the trade instance, two windows will be visible, the first window will ho
 
 You must have **BepinEx** installed before attempting to install this mod.
 Move the **.dll file** into your **Valheim\BepInEx\plugins** folder.
+
+In order to configure the trade UI window placement, press **F11** (default key) and drag the windows/buttons to their desired location.
+While in placement mode, elements that can be moved will be highlighted purple.
 
 # Feedback
 
@@ -40,8 +44,11 @@ If you discover a mod incompatibility then I will attempt to make it compatible.
 ![alt text](https://i.imgur.com/2rqd5SN.png "Screenshot 4")
 
 # Changelog
-
+        Version 1.1.0
+            Added Window Edit Mode - toggled on/off using F11 (configurable).
+            Fixed bug where inventory grid misaligns when using custom Valheim Plus inventory config.
+            Disable E (interact) closing the current trade instance.
         Version 1.0.1
             Added Gamepad support.
         Version 1.0.0
-            Player Trading initial release
+            Player Trading initial release.
