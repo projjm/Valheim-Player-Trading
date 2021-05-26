@@ -15,7 +15,7 @@ namespace PlayerTrading
 
     }
 
-    [BepInPlugin("projjm.playerTrading", "Player Trading", "1.1.0")]
+    [BepInPlugin("projjm.playerTrading", "Player Trading", "1.1.1")]
     public class PlayerTradingMain : BaseUnityPlugin
     {
         public static ConfigEntry<bool> UseModifierKey;
