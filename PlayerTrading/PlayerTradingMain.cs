@@ -38,7 +38,7 @@ namespace PlayerTrading
         ALT,
     }
 
-    [BepInPlugin("projjm.playerTrading", "Player Trading", "1.2.0")]
+    [BepInPlugin("projjm.playerTrading", "Player Trading", "1.2.1")]
     public class PlayerTradingMain : BaseUnityPlugin
     {
         public static ConfigEntry<bool> UseModifierKey;
@@ -78,10 +78,12 @@ namespace PlayerTrading
 
         private void InitLocalization()
         {
-            //JSON.RegisterCustomType(typeof(StringLocalization), 
             JSON.ClearReflectionCache();
-
             string filePath = "BepInEx\\config\\";
+
+            if (!Directory.Exists(filePath))
+                Directory.CreateDirectory(filePath);
+
             if (File.Exists(filePath + LocalizationFileName))
             {
                 string json = File.ReadAllText(filePath + LocalizationFileName);
