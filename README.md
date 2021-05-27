@@ -24,6 +24,8 @@ Move the **.dll file** into your **Valheim\BepInEx\plugins** folder.
 In order to configure the trade UI window placement, press **F11** (default key) and drag the windows/buttons to their desired location.
 While in placement mode, elements that can be moved will be highlighted purple.
 
+If you want to translate this mod for another language, I've provided an additional config file for string localization named PlayerTradingStrings.txt. This file is provided in a JSON format and each entry is defined as **"Key" : "Value"**. To configure this file simply change the **Value** of each entry. Be careful not to change the **Key** string otherwise the mod may break.
+
 # Feedback
 
 I appreciate any feedback that you might have. If you encounter a bug please report it whenever you can so that I can fix it in the following update.
