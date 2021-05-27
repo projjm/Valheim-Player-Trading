@@ -44,6 +44,10 @@ If you discover a mod incompatibility then I will attempt to make it compatible.
 ![alt text](https://i.imgur.com/2rqd5SN.png "Screenshot 4")
 
 # Changelog
+        Version 1.2.0
+            Added string localization file into the config folder (must be configured manually).
+            Fixed trade requests being sent while typing in the chat.
+            Attempt to fix bug where trade requests are sent to nearby players.
         Version 1.1.1
             Added config option to use modifier key when sending/receiving trade requests
         Version 1.1.0
