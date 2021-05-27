@@ -4,18 +4,41 @@ using UnityEngine;
 using System.Reflection;
 using System;
 using BepInEx.Configuration;
+using fastJSON;
+using System.IO;
+
 
 namespace PlayerTrading
 {
+    [Serializable]
+    public class StringLocalization
+    {
+        public string TradeRequestSent = "Trade request sent";
+        public string TradeRecentlySent = "Trade request recently sent";
+        public string StartedTradeWithX = "Started trading with";
+        public string XWantsToTrade = "wants to trade";
+        public string XHasCancelledTrade = "has cancelled the trade";
+        public string LocalPlayerCancelledTrade = "You have cancelled the trade";
+        public string CantStartNewTradeInstance = "You cannot start a new trade session";
+        public string TradeSuccessful = "Trade successful";
+        public string NotEnoughInventorySlots = "Not enough inventory slots";
+        public string ToGiveWindowText = "You Will Give";
+        public string ToReceiveWindowText = "You Will Receive";
+        public string AcceptTradeButtonText = "Accept Trade";
+        public string ChangeTradeButtonText = "Change Trade";
+        public string CancelTradeButtonText = "Cancel Trade";
+        public string EditModeOn = "Edit UI Mode ON";
+        public string EditModeOff = "Edit UI Mode OFF";
+    }
+
     public enum ModifierKey
     {
         NONE,
         CTRL,
         ALT,
-
     }
 
-    [BepInPlugin("projjm.playerTrading", "Player Trading", "1.1.1")]
+    [BepInPlugin("projjm.playerTrading", "Player Trading", "1.2.0")]
     public class PlayerTradingMain : BaseUnityPlugin
     {
         public static ConfigEntry<bool> UseModifierKey;
@@ -25,8 +48,9 @@ namespace PlayerTrading
         public static ConfigEntry<Vector2> ToReceiveUserOffset;
         public static ConfigEntry<Vector2> AcceptButtonUserOffset;
         public static ConfigEntry<Vector2> CancelButtonUserOffset;
+        public static StringLocalization Localization;
+        private const string LocalizationFileName = "PlayerTradingStrings.txt";
 
-        
         internal readonly Harmony harmony = new Harmony("projjm.playerTrading");
         internal Assembly assembly;
         internal static event Action OnLocalPlayerChanged;
@@ -38,6 +62,7 @@ namespace PlayerTrading
             assembly = Assembly.GetExecutingAssembly();
             harmony.PatchAll(assembly);
             BindConfigs();
+            InitLocalization();
         }
 
         private void BindConfigs()
@@ -49,6 +74,28 @@ namespace PlayerTrading
             AcceptButtonUserOffset = Config.Bind("Offsets", "acceptButtonUserOffset", Vector2.zero, "Offset values for the Accept Trade button (Set to nothing to reset position)");
             CancelButtonUserOffset = Config.Bind("Offsets", "cancelButtonUserOffset", Vector2.zero, "Offset values for the Cancel Trade button (Set to nothing to reset position)");
             EditWindowLayoutKey = Config.Bind("Keybinds", "editWindowLayoutKey", KeyCode.F11, "Key to press to enable Window Position Mode");
+        }
+
+        private void InitLocalization()
+        {
+            //JSON.RegisterCustomType(typeof(StringLocalization), 
+            JSON.ClearReflectionCache();
+
+            string filePath = "BepInEx\\config\\";
+            if (File.Exists(filePath + LocalizationFileName))
+            {
+                string json = File.ReadAllText(filePath + LocalizationFileName);
+                Localization = JSON.ToObject<StringLocalization>(json);
+            }
+            else
+            {
+                JSONParameters param = new JSONParameters();
+                param.UseExtensions = false;
+
+                Localization = new StringLocalization();
+                string json = JSON.ToNiceJSON(Localization, param);
+                File.WriteAllText(filePath + LocalizationFileName, json);
+            }
         }
 
         public void OnDestroy()

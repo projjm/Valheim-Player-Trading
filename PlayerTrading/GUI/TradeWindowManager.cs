@@ -22,10 +22,6 @@ namespace PlayerTrading.GUI
         private TradeButton _acceptTradeButton;
         private TradeButton _cancelTradeButton;
 
-        private const string AcceptButtonText = "Accept Trade";
-        private const string ChangeButtonText = "Change Trade";
-        private const string CancelButtonText = "Cancel Trade";
-
         public event Action OnTradeAcceptPressed;
         public event Action OnCancelTradePressed;
         public event Action OnChangeTradePressed;
@@ -39,7 +35,7 @@ namespace PlayerTrading.GUI
             _editWindowPositionMode = !_editWindowPositionMode;
             if (_editWindowPositionMode)
             {
-                MessageHud.instance.ShowMessage(MessageHud.MessageType.Center, "Edit UI Mode ON");
+                MessageHud.instance.ShowMessage(MessageHud.MessageType.Center, PlayerTradingMain.Localization.EditModeOn);
 
                 _toTradeWindow.SetAsWindowEditMode(true);
                 _toReceiveWindow.SetAsWindowEditMode(true);
@@ -53,7 +49,7 @@ namespace PlayerTrading.GUI
             }
             else
             {
-                MessageHud.instance.ShowMessage(MessageHud.MessageType.Center, "Edit UI Mode OFF");
+                MessageHud.instance.ShowMessage(MessageHud.MessageType.Center, PlayerTradingMain.Localization.EditModeOff);
 
                 _toTradeWindow.SetAsWindowEditMode(false);
                 _toReceiveWindow.SetAsWindowEditMode(false);
@@ -80,12 +76,12 @@ namespace PlayerTrading.GUI
             _toTradeWindow.SetAsAccepted(accepted);
             if (accepted)
             {
-                _acceptTradeButton.SetText(ChangeButtonText);
+                _acceptTradeButton.SetText(PlayerTradingMain.Localization.ChangeTradeButtonText);
                 _acceptTradeButton.SetOnClickAction(ChangeButtonClicked);
             }
             else
             {
-                _acceptTradeButton.SetText(AcceptButtonText);
+                _acceptTradeButton.SetText(PlayerTradingMain.Localization.AcceptTradeButtonText);
                 _acceptTradeButton.SetOnClickAction(AcceptButtonClicked);
             }       
         }
@@ -104,12 +100,12 @@ namespace PlayerTrading.GUI
         private void InitialiseWindows()
         {
             _toReceiveWindow = gameObject.AddComponent<PreviewTradeWindow>();
-            _toReceiveWindow.Initialise("You Will Receive", TradeWindow.WindowPositionType.RIGHT);
+            _toReceiveWindow.Initialise(PlayerTradingMain.Localization.ToReceiveWindowText, TradeWindow.WindowPositionType.RIGHT);
             _toReceiveWindow.SetUserOffsets(PlayerTradingMain.ToReceiveUserOffset.Value.x, PlayerTradingMain.ToReceiveUserOffset.Value.y);
             _toReceiveWindow.Hide();
 
             _toTradeWindow = gameObject.AddComponent<ContainerTradeWindow>();
-            _toTradeWindow.Initialise("You Will Give", TradeWindow.WindowPositionType.LEFT);
+            _toTradeWindow.Initialise(PlayerTradingMain.Localization.ToGiveWindowText, TradeWindow.WindowPositionType.LEFT);
             _toTradeWindow.SetUserOffsets(PlayerTradingMain.ToGiveUserOffset.Value.x, PlayerTradingMain.ToGiveUserOffset.Value.y);
             _toTradeWindow.Hide();  
 
@@ -118,9 +114,9 @@ namespace PlayerTrading.GUI
         private void InitialiseButtons()
         {
             _acceptTradeButton = gameObject.AddComponent<TradeButton>();
-            _acceptTradeButton.Init("Accept Trade", AcceptButtonClicked, PlayerTradingMain.AcceptButtonUserOffset, _toTradeWindow.GetUIGroupHandler(), "JoyButtonX", "X", 0f, (Screen.height / (30f)));
+            _acceptTradeButton.Init(PlayerTradingMain.Localization.AcceptTradeButtonText, AcceptButtonClicked, PlayerTradingMain.AcceptButtonUserOffset, _toTradeWindow.GetUIGroupHandler(), "JoyButtonX", "X", 0f, (Screen.height / (30f)));
             _cancelTradeButton = gameObject.AddComponent<TradeButton>();
-            _cancelTradeButton.Init("Cancel Trade", CancelButtonClicked, PlayerTradingMain.CancelButtonUserOffset, _toTradeWindow.GetUIGroupHandler(), "JoyButtonB", "B", 0f, -(Screen.height / (30f)));
+            _cancelTradeButton.Init(PlayerTradingMain.Localization.CancelTradeButtonText, CancelButtonClicked, PlayerTradingMain.CancelButtonUserOffset, _toTradeWindow.GetUIGroupHandler(), "JoyButtonB", "B", 0f, -(Screen.height / (30f)));
         }
 
         private void AcceptButtonClicked()

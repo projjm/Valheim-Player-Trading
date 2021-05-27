@@ -73,7 +73,8 @@ namespace PlayerTrading
         {
             if (ZInput.GetButtonDown("Use") || ZInput.GetButtonDown("JoyUse"))
             {
-                bool shouldSend = (!_isUsingModifierKey) || (_isUsingModifierKey && Input.GetKey(_modifierKey));
+                bool chatOpen = Chat.instance.m_wasFocused;
+                bool shouldSend = !chatOpen && ((!_isUsingModifierKey) || (_isUsingModifierKey && Input.GetKey(_modifierKey)));
                 if (shouldSend)
                     TrySendTradeRequest();
             }
@@ -126,6 +127,11 @@ namespace PlayerTrading
 
         private void TrySendTradeRequest()
         {
+            _localPlayer.UpdateHover();
+
+            if (_localPlayer.m_hoveringCreature == null)
+                return;
+
             Character characterHover = _localPlayer.m_hoveringCreature;
             Player targetPlayer = null;
             if (characterHover && characterHover is Player)
@@ -140,7 +146,7 @@ namespace PlayerTrading
 
             if (_tradeRequestsSent.Contains(targetPlayer))
             {
-                MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, "Trade request recently sent");
+                MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization.TradeRecentlySent);
                 return;
             }
 
@@ -161,7 +167,7 @@ namespace PlayerTrading
             _tradeRequestsSent.Add(targetPlayer);
             StartCoroutine(Co_ExpireTradeRequestSent(targetPlayer));
 
-            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, "Trade request sent");
+            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization.TradeRequestSent);
             ZRoutedRpc.instance.InvokeRoutedRPC(targetPlayer.GetOwner(), "TradeRequestedClient", _localPlayer.GetOwner());
         }
 
@@ -195,7 +201,7 @@ namespace PlayerTrading
             }
             else
             {
-                MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, "You cannot start a new trade session");
+                MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization.CantStartNewTradeInstance);
             }
         }
 
@@ -219,7 +225,7 @@ namespace PlayerTrading
             if (_tradeRequestsReceived.Contains(otherPlayer))
                 _tradeRequestsReceived.Remove(otherPlayer);
 
-            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, "Started trading with " + otherPlayer.GetPlayerName());
+            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization.StartedTradeWithX + " " + otherPlayer.GetPlayerName());
             StartNewTradeInstance(otherPlayer);
         }
 
@@ -237,7 +243,7 @@ namespace PlayerTrading
             _tradeRequestsReceived.Add(requester);
             StartCoroutine(Co_ExpireTradeRequestReceived(requester));
 
-            MessageHud.instance.ShowBiomeFoundMsg(name + " wants to trade", false);
+            MessageHud.instance.ShowBiomeFoundMsg(name + " " + PlayerTradingMain.Localization.XWantsToTrade, false);
         }
 
         public void OnNewLocalPlayer()

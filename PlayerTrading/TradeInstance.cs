@@ -139,7 +139,7 @@ namespace PlayerTrading
         {
             if (!CanAcceptTrade())
             {
-                MessageHud.instance.ShowBiomeFoundMsg("Not enough inventory slots", false);
+                MessageHud.instance.ShowBiomeFoundMsg(PlayerTradingMain.Localization.NotEnoughInventorySlots, false);
                 return;
             }
 
@@ -183,7 +183,7 @@ namespace PlayerTrading
 
         private void FinalizeTrade()
         {
-            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, "Trade successful");
+            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization.TradeSuccessful);
             _localPlayer.GetInventory().MoveAll(_toReceive);
             _toTrade.RemoveAll();
 
@@ -193,7 +193,7 @@ namespace PlayerTrading
 
         private void NotifyCancelTrade()
         {
-            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, "You have cancelled the trade");
+            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization.LocalPlayerCancelledTrade);
             ZRoutedRpc.instance.InvokeRoutedRPC(_otherPlayer.GetOwner(), "CancelTradingClient");
         }
 
@@ -229,7 +229,7 @@ namespace PlayerTrading
         private void RPC_CancelTradingClient(long sender)
         {
             string name = ZNetUtils.GetPlayer(sender).GetPlayerName();
-            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, name + " has cancelled the trade");
+            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, name + " " + PlayerTradingMain.Localization.XHasCancelledTrade);
 
             _cancelledByOtherPlayer = true;
             Destroy(this);
