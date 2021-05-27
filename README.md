@@ -44,6 +44,8 @@ If you discover a mod incompatibility then I will attempt to make it compatible.
 ![alt text](https://i.imgur.com/2rqd5SN.png "Screenshot 4")
 
 # Changelog
+        Version 1.1.1
+            Added config option to use modifier key when sending/receiving trade requests
         Version 1.1.0
             Added Window Edit Mode - toggled on/off using F11 (configurable).
             Fixed bug where inventory grid misaligns when using custom Valheim Plus inventory config.
