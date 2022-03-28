@@ -79,7 +79,7 @@ namespace PlayerTrading
         private void InitLocalization()
         {
             JSON.ClearReflectionCache();
-            string filePath = Paths.BepInExConfigPath + Path.PathSeparator;
+            string filePath = Paths.ConfigPath + Path.PathSeparator;
 
             if (!Directory.Exists(filePath))
                 Directory.CreateDirectory(filePath);
