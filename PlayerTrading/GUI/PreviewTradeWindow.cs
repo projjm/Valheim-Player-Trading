@@ -153,7 +153,6 @@ namespace PlayerTrading.GUI
         public override void OnTradeCancelled()
         {
             Hide();
-            LocalPlayer!.GetInventory().MoveAll(WindowInventory);
             WindowInventory!.RemoveAll();
         }
 
