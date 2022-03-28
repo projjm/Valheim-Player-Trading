@@ -44,9 +44,6 @@ namespace PlayerTrading.Patches
             {
                 PlayerTradingMain.NewLocalPlayer();
             }
-        
-        
-        
         }
 
     }
