@@ -20,7 +20,7 @@ namespace PlayerTrading
             ZNetPeer peer = ZNet.instance.GetPeer(uid);
             if (peer == null)
                 Debug.Log("UTIL: Failed to get ZDOID from UID");
-            return peer.m_characterID;
+            return peer!.m_characterID;
         }
 
         public static Player GetPlayer(ZDOID ZDOID)
@@ -31,7 +31,7 @@ namespace PlayerTrading
                     return player;
             }
             Debug.Log("UTIL: Failed to get Player from ZDOID");
-            return null;
+            return null!;
         }
 
         public static Player GetPlayer(long uid)
@@ -42,7 +42,7 @@ namespace PlayerTrading
                     return player;
             }
             Debug.Log("UTIL: Failed to get Player from UID");
-            return null;
+            return null!;
         }
 
         public static long GetUID(Player player) => player.GetOwner();

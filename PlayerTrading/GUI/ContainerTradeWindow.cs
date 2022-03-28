@@ -9,9 +9,9 @@ namespace PlayerTrading.GUI
     {
         private const int WindowWidth = 6;
         private const int WindowHeight = 4;
-        private RectTransform _takeAllButtonTransform;
-        private RectTransform _gridRoot;
-        private InventoryGrid _grid;
+        private RectTransform? _takeAllButtonTransform;
+        private RectTransform? _gridRoot;
+        private InventoryGrid? _grid;
         private bool _flipped;
         private bool _isMovingWindow;
 
@@ -33,7 +33,7 @@ namespace PlayerTrading.GUI
 
         private void UpdateWindowEditMode()
         {
-            Vector2 localMousePosition = TradeWindowGUIRT.InverseTransformPoint(Input.mousePosition);
+            Vector2 localMousePosition = TradeWindowGUIRT!.InverseTransformPoint(Input.mousePosition);
             if (Input.GetMouseButtonDown(0) && TradeWindowGUIRT.rect.Contains(localMousePosition))
             {
                 _isMovingWindow = true;
@@ -67,7 +67,7 @@ namespace PlayerTrading.GUI
 
         private void SaveUserOffsets()
         {
-            PlayerTradingMain.ToGiveUserOffset.Value = GetUserOffsets();
+            PlayerTradingMain.ToGiveUserOffset!.Value = GetUserOffsets();
         }
 
         private void SetUpLocalInventory()
@@ -77,7 +77,7 @@ namespace PlayerTrading.GUI
 
         public override List<ItemDrop.ItemData> GetItems()
         {
-            return WindowInventory.GetAllItems();
+            return WindowInventory!.GetAllItems();
         }
 
         private void ResetGrid(InventoryGrid grid)
@@ -85,7 +85,7 @@ namespace PlayerTrading.GUI
             if (!_gridRoot)
                 _gridRoot = grid.gameObject.transform.Find("Root").GetComponent<RectTransform>();
 
-            for (int i = 0; i < _gridRoot.childCount; i++)
+            for (int i = 0; i < _gridRoot!.childCount; i++)
             {
                 Destroy(_gridRoot.GetChild(i).gameObject);
             }
@@ -95,16 +95,16 @@ namespace PlayerTrading.GUI
             grid.m_width = 0;
             grid.m_inventory = WindowInventory;
             grid.UpdateInventory(WindowInventory, null, null);
-            WindowInventory.Changed();
+            WindowInventory!.Changed();
         }
 
 
         public override void SetAsAccepted(bool accepted)
         {
             if (accepted)
-                WindowBackground.color = Color.Lerp(OriginalBkgColor, Color.green, 0.35f);
+                WindowBackground!.color = Color.Lerp(OriginalBkgColor, Color.green, 0.35f);
             else
-                WindowBackground.color = OriginalBkgColor;
+                WindowBackground!.color = OriginalBkgColor;
         }
 
         public override void Show()
@@ -137,7 +137,7 @@ namespace PlayerTrading.GUI
 
         private void FlipHUD()
         {
-            Vector3 pos = _takeAllButtonTransform.anchoredPosition;
+            Vector3 pos = _takeAllButtonTransform!.anchoredPosition;
             RectTransformUtility.FlipLayoutOnAxis(TradeWindowGUIRT, 0, true, true);
             RectTransformUtility.FlipLayoutOnAxis(_gridRoot, 0, true, true);
             _takeAllButtonTransform.anchoredPosition = pos;
@@ -156,7 +156,7 @@ namespace PlayerTrading.GUI
         {
             ResetPosition();
             Hide();
-            LocalPlayer.GetInventory().MoveAll(WindowInventory);
+            LocalPlayer!.GetInventory().MoveAll(WindowInventory);
         }
 
         public override bool IsShowing()
@@ -166,14 +166,14 @@ namespace PlayerTrading.GUI
 
         public override void ResetForNewInstance()
         {
-            WindowInventory.RemoveAll();
-            ResetGrid(_grid);
+            WindowInventory?.RemoveAll();
+            ResetGrid(_grid!);
         }
 
         public override void Refresh()
         {
             //WindowInventory.Changed();
-            ResetGrid(_grid);
+            ResetGrid(_grid!);
         }
 
         public override void ResetDefaultPosition()
@@ -183,7 +183,7 @@ namespace PlayerTrading.GUI
 
         public override UIGroupHandler GetUIGroupHandler()
         {
-            return TradeWindowGUIRT.GetComponent<UIGroupHandler>();
+            return TradeWindowGUIRT!.GetComponent<UIGroupHandler>();
         }
 
         public override void SetAsWindowEditMode(bool modeOn)
@@ -192,11 +192,11 @@ namespace PlayerTrading.GUI
 
             if (modeOn)
             {
-                WindowBackground.color = Color.Lerp(OriginalBkgColor, Color.magenta, 0.35f);
+                WindowBackground!.color = Color.Lerp(OriginalBkgColor, Color.magenta, 0.35f);
             }
             else
             {
-                WindowBackground.color = OriginalBkgColor;
+                WindowBackground!.color = OriginalBkgColor;
                 SaveUserOffsets();
             }
         }

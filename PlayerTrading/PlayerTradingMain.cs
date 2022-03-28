@@ -41,21 +41,21 @@ namespace PlayerTrading
     [BepInPlugin("projjm.playerTrading", "Player Trading", "1.2.1")]
     public class PlayerTradingMain : BaseUnityPlugin
     {
-        public static ConfigEntry<bool> UseModifierKey;
-        public static ConfigEntry<KeyCode> ModifierKey;
-        public static ConfigEntry<KeyCode> EditWindowLayoutKey;
-        public static ConfigEntry<Vector2> ToGiveUserOffset;
-        public static ConfigEntry<Vector2> ToReceiveUserOffset;
-        public static ConfigEntry<Vector2> AcceptButtonUserOffset;
-        public static ConfigEntry<Vector2> CancelButtonUserOffset;
-        public static StringLocalization Localization;
+        public static ConfigEntry<bool>? UseModifierKey;
+        public static ConfigEntry<KeyCode>? ModifierKey;
+        public static ConfigEntry<KeyCode>? EditWindowLayoutKey;
+        public static ConfigEntry<Vector2>? ToGiveUserOffset;
+        public static ConfigEntry<Vector2>? ToReceiveUserOffset;
+        public static ConfigEntry<Vector2>? AcceptButtonUserOffset;
+        public static ConfigEntry<Vector2>? CancelButtonUserOffset;
+        public static StringLocalization? Localization;
         private const string LocalizationFileName = "PlayerTradingStrings.txt";
 
         internal readonly Harmony harmony = new Harmony("projjm.playerTrading");
-        internal Assembly assembly;
-        internal static event Action OnLocalPlayerChanged;
+        internal Assembly? assembly;
+        internal static event Action? OnLocalPlayerChanged;
 
-        private TradeHandler tradeHandler;
+        private TradeHandler? tradeHandler;
 
         public void Awake()
         {
@@ -79,7 +79,7 @@ namespace PlayerTrading
         private void InitLocalization()
         {
             JSON.ClearReflectionCache();
-            string filePath = "BepInEx\\config\\";
+            string filePath = Paths.BepInExConfigPath + Path.PathSeparator;
 
             if (!Directory.Exists(filePath))
                 Directory.CreateDirectory(filePath);

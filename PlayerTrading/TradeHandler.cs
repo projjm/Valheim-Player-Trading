@@ -8,10 +8,10 @@ namespace PlayerTrading
 {
     class TradeHandler : MonoSingleton<TradeHandler>
     {
-        private Player _localPlayer;
+        private Player? _localPlayer;
         private HashSet<Player> _tradeRequestsSent = new HashSet<Player>();
         private HashSet<Player> _tradeRequestsReceived = new HashSet<Player>();
-        private TradeInstance _currentTradeInstance;
+        private TradeInstance? _currentTradeInstance;
 
         private KeyCode _editModeKey;
         private KeyCode _modifierKey;
@@ -25,9 +25,9 @@ namespace PlayerTrading
         {
             RegisterRPCs();
             SubscribeToEvents();
-            _editModeKey = PlayerTradingMain.EditWindowLayoutKey.Value;
-            _isUsingModifierKey = PlayerTradingMain.UseModifierKey.Value;
-            _modifierKey = PlayerTradingMain.ModifierKey.Value;
+            _editModeKey = PlayerTradingMain.EditWindowLayoutKey!.Value;
+            _isUsingModifierKey = PlayerTradingMain.UseModifierKey!.Value;
+            _modifierKey = PlayerTradingMain.ModifierKey!.Value;
         }
 
         private void RegisterRPCs()
@@ -93,18 +93,18 @@ namespace PlayerTrading
         {
             if (_currentTradeInstance)
             {
-                return _currentTradeInstance.GetToTradeInventory();
+                return _currentTradeInstance!.GetToTradeInventory();
             }
             else
             {
-                return null;
+                return null!;
             }
         }
 
         public void NotifyInventoryChanged()
         {
             if (_currentTradeInstance)
-                _currentTradeInstance.OnToTradeInventoryChanged();
+                _currentTradeInstance!.OnToTradeInventoryChanged();
         }
 
         public string GetAction(Player targetPlayer)
@@ -127,15 +127,15 @@ namespace PlayerTrading
 
         private void TrySendTradeRequest()
         {
-            _localPlayer.UpdateHover();
+            _localPlayer!.UpdateHover();
 
             if (_localPlayer.m_hoveringCreature == null)
                 return;
 
             Character characterHover = _localPlayer.m_hoveringCreature;
-            Player targetPlayer = null;
+            Player targetPlayer = null!;
             if (characterHover && characterHover is Player)
-                targetPlayer = characterHover as Player;
+                targetPlayer = (characterHover as Player)!;
 
             if (targetPlayer == null || targetPlayer == Player.m_localPlayer)
                 return;
@@ -146,7 +146,7 @@ namespace PlayerTrading
 
             if (_tradeRequestsSent.Contains(targetPlayer))
             {
-                MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization.TradeRecentlySent);
+                MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization!.TradeRecentlySent);
                 return;
             }
 
@@ -167,8 +167,8 @@ namespace PlayerTrading
             _tradeRequestsSent.Add(targetPlayer);
             StartCoroutine(Co_ExpireTradeRequestSent(targetPlayer));
 
-            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization.TradeRequestSent);
-            ZRoutedRpc.instance.InvokeRoutedRPC(targetPlayer.GetOwner(), "TradeRequestedClient", _localPlayer.GetOwner());
+            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization?.TradeRequestSent);
+            ZRoutedRpc.instance.InvokeRoutedRPC(targetPlayer.GetOwner(), "TradeRequestedClient", _localPlayer!.GetOwner());
         }
 
         private IEnumerator Co_ExpireTradeRequestSent(Player player)
@@ -182,7 +182,7 @@ namespace PlayerTrading
         {
             long targetUid = targetPlayer.GetOwner();
             RPC_StartTradingClient(0, targetUid);
-            ZRoutedRpc.instance.InvokeRoutedRPC(targetUid, "StartTradingClient", _localPlayer.GetOwner());
+            ZRoutedRpc.instance.InvokeRoutedRPC(targetUid, "StartTradingClient", _localPlayer!.GetOwner());
         }
 
         private IEnumerator Co_ExpireTradeRequestReceived(Player player)
@@ -201,7 +201,7 @@ namespace PlayerTrading
             }
             else
             {
-                MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization.CantStartNewTradeInstance);
+                MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization?.CantStartNewTradeInstance);
             }
         }
 
@@ -225,25 +225,25 @@ namespace PlayerTrading
             if (_tradeRequestsReceived.Contains(otherPlayer))
                 _tradeRequestsReceived.Remove(otherPlayer);
 
-            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization.StartedTradeWithX + " " + otherPlayer.GetPlayerName());
+            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization?.StartedTradeWithX + " " + otherPlayer.GetPlayerName());
             StartNewTradeInstance(otherPlayer);
         }
 
         private void RPC_ReceiveTradeRequestClient(long sender, long requesterUid)
         {
             Player requester = ZNetUtils.GetPlayer(requesterUid);
-            string name = requester.GetPlayerName();
+            string playerName = requester.GetPlayerName();
 
             if (requester == null)
                 Debug.Log("Trade requester can't be resolved");
 
-            if (_tradeRequestsReceived.Contains(requester))
+            if (_tradeRequestsReceived.Contains(requester!))
                 return;
 
-            _tradeRequestsReceived.Add(requester);
-            StartCoroutine(Co_ExpireTradeRequestReceived(requester));
+            _tradeRequestsReceived.Add(requester!);
+            StartCoroutine(Co_ExpireTradeRequestReceived(requester!));
 
-            MessageHud.instance.ShowBiomeFoundMsg(name + " " + PlayerTradingMain.Localization.XWantsToTrade, false);
+            MessageHud.instance.ShowBiomeFoundMsg(playerName + " " + PlayerTradingMain.Localization?.XWantsToTrade, false);
         }
 
         public void OnNewLocalPlayer()

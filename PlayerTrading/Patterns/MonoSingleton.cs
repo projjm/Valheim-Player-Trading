@@ -4,14 +4,14 @@ namespace PlayerTrading.Patterns
 {
     public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
     {
-        private static T _instance; 
+        private static T? _instance; 
         public static T Instance {
             get {
                 if (_instance == null)
                 {
                     //Debug.LogError(typeof(T).ToString() + " Instance has not been initialised");
                 } 
-                return _instance; 
+                return _instance!; 
             }
         }
 

@@ -5,13 +5,13 @@ namespace PlayerTrading
 {
     class TradeInstance : MonoBehaviour
     {
-        private Player _localPlayer;
-        private Player _otherPlayer;
-        private Transform _localPlayerTransform;
-        private Transform _otherPlayerTransform;
+        private Player? _localPlayer;
+        private Player? _otherPlayer;
+        private Transform? _localPlayerTransform;
+        private Transform? _otherPlayerTransform;
 
-        private Inventory _toTrade;
-        private Inventory _toReceive;
+        private Inventory? _toTrade;
+        private Inventory? _toReceive;
 
         private float _maxDistance;
         private bool _cancelledByOtherPlayer;
@@ -50,8 +50,8 @@ namespace PlayerTrading
 
         private void StoreReferences()
         {
-            _localPlayerTransform = _localPlayer.transform;
-            _otherPlayerTransform = _otherPlayer.transform;
+            _localPlayerTransform = _localPlayer!.transform;
+            _otherPlayerTransform = _otherPlayer!.transform;
             _maxDistance = TradeHandler.Instance.GetMaxDistance();
         }
 
@@ -92,9 +92,9 @@ namespace PlayerTrading
         }
 
 
-        public Inventory GetToTradeInventory() => _toTrade;
+        public Inventory GetToTradeInventory() => _toTrade!;
 
-        public Inventory GetToReceieveInventory() => _toReceive;
+        public Inventory GetToReceieveInventory() => _toReceive!;
 
         public void OnToTradeInventoryChanged()
         {
@@ -111,8 +111,8 @@ namespace PlayerTrading
         private void SendItemData()
         {
             ZPackage package = new ZPackage();
-            _toTrade.Save(package);
-            ZRoutedRpc.instance.InvokeRoutedRPC(_otherPlayer.GetOwner(), "SendTradeData", package);
+            _toTrade!.Save(package);
+            ZRoutedRpc.instance.InvokeRoutedRPC(_otherPlayer!.GetOwner(), "SendTradeData", package);
         }
 
         private void CheckTradeDistance()
@@ -139,12 +139,12 @@ namespace PlayerTrading
         {
             if (!CanAcceptTrade())
             {
-                MessageHud.instance.ShowBiomeFoundMsg(PlayerTradingMain.Localization.NotEnoughInventorySlots, false);
+                MessageHud.instance.ShowBiomeFoundMsg(PlayerTradingMain.Localization?.NotEnoughInventorySlots, false);
                 return;
             }
 
             HasAccepted = true;
-            ZRoutedRpc.instance.InvokeRoutedRPC(_otherPlayer.GetOwner(), "AcceptTrade");
+            ZRoutedRpc.instance.InvokeRoutedRPC(_otherPlayer!.GetOwner(), "AcceptTrade");
             if (OtherPlayerHasAccepted)
                 FinalizeTrade();
         }
@@ -156,12 +156,12 @@ namespace PlayerTrading
 
         private bool CanItemsFit()
         {
-            Inventory playerInv = _localPlayer.GetInventory();
+            Inventory playerInv = _localPlayer!.GetInventory();
             Inventory fakeInv = new Inventory("CHECK", null, playerInv.GetWidth(), playerInv.GetHeight());
 
             playerInv.m_inventory.ForEach(item => fakeInv.AddItem(item.Clone()));
 
-            foreach (ItemDrop.ItemData item in _toReceive.m_inventory)
+            foreach (ItemDrop.ItemData item in _toReceive!.m_inventory)
             {
                 if (fakeInv.CanAddItem(item.Clone()))
                 {
@@ -178,14 +178,14 @@ namespace PlayerTrading
         private void ChangeTrade()
         {
             HasAccepted = false;
-            ZRoutedRpc.instance.InvokeRoutedRPC(_otherPlayer.GetOwner(), "TradeChangedClient");
+            ZRoutedRpc.instance.InvokeRoutedRPC(_otherPlayer!.GetOwner(), "TradeChangedClient");
         }
 
         private void FinalizeTrade()
         {
-            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization.TradeSuccessful);
-            _localPlayer.GetInventory().MoveAll(_toReceive);
-            _toTrade.RemoveAll();
+            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization?.TradeSuccessful);
+            _localPlayer!.GetInventory().MoveAll(_toReceive);
+            _toTrade!.RemoveAll();
 
             _tradeFinalized = true;
             Destroy(this);
@@ -193,8 +193,8 @@ namespace PlayerTrading
 
         private void NotifyCancelTrade()
         {
-            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization.LocalPlayerCancelledTrade);
-            ZRoutedRpc.instance.InvokeRoutedRPC(_otherPlayer.GetOwner(), "CancelTradingClient");
+            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, PlayerTradingMain.Localization?.LocalPlayerCancelledTrade);
+            ZRoutedRpc.instance.InvokeRoutedRPC(_otherPlayer!.GetOwner(), "CancelTradingClient");
         }
 
         private void DestroyInstance() => Destroy(this);
@@ -222,14 +222,14 @@ namespace PlayerTrading
         {
             HasAccepted = false;
             OtherPlayerHasAccepted = false;
-            _toReceive.Load(data);
+            _toReceive!.Load(data);
             TradeWindowManager.Instance.RefreshToReceiveWindow();
         }
 
         private void RPC_CancelTradingClient(long sender)
         {
-            string name = ZNetUtils.GetPlayer(sender).GetPlayerName();
-            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, name + " " + PlayerTradingMain.Localization.XHasCancelledTrade);
+            string playerName = ZNetUtils.GetPlayer(sender).GetPlayerName();
+            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, playerName + " " + PlayerTradingMain.Localization?.XHasCancelledTrade);
 
             _cancelledByOtherPlayer = true;
             Destroy(this);
