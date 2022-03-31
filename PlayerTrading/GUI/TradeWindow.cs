@@ -14,12 +14,12 @@ namespace PlayerTrading.GUI
 
         protected bool Initialised { get; set; }
         protected bool WindowActive { get; set; }
-        protected string Name { get; set; }
-        protected WindowPositionType WindowPosition { get; set; }
-        protected RectTransform TradeWindowGUIRT { get; set; }
-        protected Player LocalPlayer { get; set; }
-        protected Inventory WindowInventory { get; set; }
-        protected Image WindowBackground { get; set; }
+        protected string? Name { get; set; }
+        protected WindowPositionType? WindowPosition { get; set; }
+        protected RectTransform? TradeWindowGUIRT { get; set; }
+        protected Player? LocalPlayer { get; set; }
+        protected Inventory? WindowInventory { get; set; }
+        protected Image? WindowBackground { get; set; }
         protected Color OriginalBkgColor { get; set; }
         protected bool WindowEditMode { get; set; }
 
@@ -75,7 +75,7 @@ namespace PlayerTrading.GUI
 
         protected Vector2 GetUserOffsets() => new Vector2(_userXOffset, _userYOffset);
 
-        public Inventory GetInventory() => WindowInventory;
+        public Inventory GetInventory() => WindowInventory!;
 
         public abstract void Initialise(string tradeWindowName, WindowPositionType windowPosition);
 
@@ -105,7 +105,7 @@ namespace PlayerTrading.GUI
 
         protected void SetDefaultPosition()
         {
-            _defaultRTAnchorMin = TradeWindowGUIRT.anchorMin;
+            _defaultRTAnchorMin = TradeWindowGUIRT!.anchorMin;
             _defaultRTAnchorMax = TradeWindowGUIRT.anchorMax;
             _defaultRTAnchorPos = TradeWindowGUIRT.anchoredPosition;
         }
@@ -126,7 +126,7 @@ namespace PlayerTrading.GUI
                     width = (Screen.width / 2) - xOffset;
                     height = (Screen.height / 2) - yOffset;
                     newPos = Camera.main.ScreenToViewportPoint(new Vector3(width, height, 0f));
-                    TradeWindowGUIRT.anchorMin = newPos;
+                    TradeWindowGUIRT!.anchorMin = newPos;
                     TradeWindowGUIRT.anchorMax = newPos;
                     TradeWindowGUIRT.anchoredPosition = newPos;
                     break;
@@ -134,7 +134,7 @@ namespace PlayerTrading.GUI
                     width = (Screen.width / 2) + xOffset;
                     height = (Screen.height / 2) - yOffset;
                     newPos = Camera.main.ScreenToViewportPoint(new Vector3(width, height, 0f));
-                    TradeWindowGUIRT.anchorMin = newPos;
+                    TradeWindowGUIRT!.anchorMin = newPos;
                     TradeWindowGUIRT.anchorMax = newPos;
                     TradeWindowGUIRT.anchoredPosition = newPos;
                     break;
@@ -145,7 +145,7 @@ namespace PlayerTrading.GUI
 
         protected void ResetPosition()
         {
-            TradeWindowGUIRT.anchorMin = _defaultRTAnchorMin;
+            TradeWindowGUIRT!.anchorMin = _defaultRTAnchorMin;
             TradeWindowGUIRT.anchorMax = _defaultRTAnchorMax;
             TradeWindowGUIRT.anchoredPosition = _defaultRTAnchorPos;
         }

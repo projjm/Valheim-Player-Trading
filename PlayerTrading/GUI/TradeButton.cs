@@ -12,19 +12,19 @@ namespace PlayerTrading.GUI
 {
     class TradeButton : MonoBehaviour
     {
-        private GameObject _buttonGameObject;
-        private Button _button;
-        private RectTransform _rectTransform;
-        private UnityAction _onClick;
-        private UIGroupHandler _uiHandler;
-        private Text _text;
-        private Image _image;
+        private GameObject? _buttonGameObject;
+        private Button? _button;
+        private RectTransform? _rectTransform;
+        private UnityAction? _onClick;
+        private UIGroupHandler? _uiHandler;
+        private Text? _text;
+        private Image? _image;
         private Color _originalColor;
-        private ConfigEntry<Vector2> _userConfig;
+        private ConfigEntry<Vector2>? _userConfig;
 
-        private string _name;
-        private string _joyButton;
-        private string _joyButtonHint;
+        private string? _name;
+        private string? _joyButton;
+        private string? _joyButtonHint;
         private float _xOffset;
         private float _yOffset;
         private float _userXOffset = 0f;
@@ -48,7 +48,7 @@ namespace PlayerTrading.GUI
 
         private void UpdateEditPosition()
         {
-            Vector2 localMousePosition = _rectTransform.InverseTransformPoint(Input.mousePosition);
+            Vector2 localMousePosition = _rectTransform!.InverseTransformPoint(Input.mousePosition);
             if (Input.GetMouseButtonDown(0) && _rectTransform.rect.Contains(localMousePosition))
             {
                 _isMovingButton = true;
@@ -69,7 +69,7 @@ namespace PlayerTrading.GUI
 
         private void SaveUserOffsets()
         {
-            _userConfig.Value = new Vector2(_userXOffset, _userYOffset);
+            _userConfig!.Value = new Vector2(_userXOffset, _userYOffset);
         }
 
         private void InitialiseButton()
@@ -114,8 +114,8 @@ namespace PlayerTrading.GUI
             float width = ((Screen.width / 2) + _xOffset + _userXOffset);
             float height = ((Screen.height / 2) + _yOffset + _userYOffset);
 
-            Vector2 newPos = Camera.main.ScreenToViewportPoint(new Vector3(width, height, 0f));
-            _rectTransform.anchorMin = newPos;
+            Vector2 newPos = Camera.main!.ScreenToViewportPoint(new Vector3(width, height, 0f));
+            _rectTransform!.anchorMin = newPos;
             _rectTransform.anchorMax = newPos;
             _rectTransform.anchoredPosition = newPos;
         }
@@ -140,27 +140,27 @@ namespace PlayerTrading.GUI
             _inEditPositionMode = modeOn;
             if (_inEditPositionMode)
             {
-                _image.color = Color.Lerp(_originalColor, Color.magenta, 0.35f);
+                _image!.color = Color.Lerp(_originalColor, Color.magenta, 0.35f);
             }
             else
             {
-                _image.color = _originalColor;
+                _image!.color = _originalColor;
             }
         }
 
         public void SetText(string text)
         {
-            _button.GetComponentInChildren<Text>().text = text;
+            _button!.GetComponentInChildren<Text>().text = text;
         }
 
         public void SetOnClickAction(UnityAction action)
         {
             _onClick = action;
-            _button.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
+            _button!.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
             _button.GetComponent<Button>().onClick.AddListener(_onClick);
         }
 
-        public void SetActive(bool active) => _buttonGameObject.SetActive(active);
+        public void SetActive(bool active) => _buttonGameObject!.SetActive(active);
 
        
     }

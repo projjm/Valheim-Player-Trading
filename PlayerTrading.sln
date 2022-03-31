@@ -1,9 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29613.14
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerTrading", "PlayerTrading\PlayerTrading.csproj", "{1993F633-EC2B-4CAC-9385-368E42CD0B3D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerTrading", "PlayerTrading\PlayerTrading.csproj", "{F9B815D6-6EF4-44DB-9A0F-436849B24670}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +8,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1993F633-EC2B-4CAC-9385-368E42CD0B3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1993F633-EC2B-4CAC-9385-368E42CD0B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1993F633-EC2B-4CAC-9385-368E42CD0B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1993F633-EC2B-4CAC-9385-368E42CD0B3D}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {AB5815D7-0319-42B8-9E77-A8045CC6C3AA}
+		{F9B815D6-6EF4-44DB-9A0F-436849B24670}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9B815D6-6EF4-44DB-9A0F-436849B24670}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9B815D6-6EF4-44DB-9A0F-436849B24670}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9B815D6-6EF4-44DB-9A0F-436849B24670}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

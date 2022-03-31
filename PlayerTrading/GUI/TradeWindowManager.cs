@@ -16,31 +16,31 @@ namespace PlayerTrading.GUI
         }
 
         private TradeWindowMode _windowMode = TradeWindowMode.NONE;
-        private TradeWindow _toTradeWindow;
-        private TradeWindow _toReceiveWindow;
+        private TradeWindow? _toTradeWindow;
+        private TradeWindow? _toReceiveWindow;
 
-        private TradeButton _acceptTradeButton;
-        private TradeButton _cancelTradeButton;
+        private TradeButton? _acceptTradeButton;
+        private TradeButton? _cancelTradeButton;
 
-        public event Action OnTradeAcceptPressed;
-        public event Action OnCancelTradePressed;
-        public event Action OnChangeTradePressed;
+        public event Action? OnTradeAcceptPressed;
+        public event Action? OnCancelTradePressed;
+        public event Action? OnChangeTradePressed;
 
         private bool _editWindowPositionMode;
         
-        public void ForceResetContainerPos() => _toTradeWindow.ResetDefaultPosition();
+        public void ForceResetContainerPos() => _toTradeWindow!.ResetDefaultPosition();
 
         public void ToggleWindowPositionMode()
         {
             _editWindowPositionMode = !_editWindowPositionMode;
             if (_editWindowPositionMode)
             {
-                MessageHud.instance.ShowMessage(MessageHud.MessageType.Center, PlayerTradingMain.Localization.EditModeOn);
+                MessageHud.instance.ShowMessage(MessageHud.MessageType.Center, PlayerTradingMain.Localization?.EditModeOn);
 
-                _toTradeWindow.SetAsWindowEditMode(true);
-                _toReceiveWindow.SetAsWindowEditMode(true);
-                _acceptTradeButton.SetEditPosMode(true);
-                _cancelTradeButton.SetEditPosMode(true);
+                _toTradeWindow!.SetAsWindowEditMode(true);
+                _toReceiveWindow!.SetAsWindowEditMode(true);
+                _acceptTradeButton!.SetEditPosMode(true);
+                _cancelTradeButton!.SetEditPosMode(true);
 
                 if (_windowMode == TradeWindowMode.NONE)
                 {
@@ -49,12 +49,12 @@ namespace PlayerTrading.GUI
             }
             else
             {
-                MessageHud.instance.ShowMessage(MessageHud.MessageType.Center, PlayerTradingMain.Localization.EditModeOff);
+                MessageHud.instance.ShowMessage(MessageHud.MessageType.Center, PlayerTradingMain.Localization?.EditModeOff);
 
-                _toTradeWindow.SetAsWindowEditMode(false);
-                _toReceiveWindow.SetAsWindowEditMode(false);
-                _acceptTradeButton.SetEditPosMode(false);
-                _cancelTradeButton.SetEditPosMode(false);
+                _toTradeWindow!.SetAsWindowEditMode(false);
+                _toReceiveWindow!.SetAsWindowEditMode(false);
+                _acceptTradeButton!.SetEditPosMode(false);
+                _cancelTradeButton!.SetEditPosMode(false);
 
                 if (_windowMode == TradeWindowMode.EDIT_WINDOW_ONLY)
                 {
@@ -73,22 +73,22 @@ namespace PlayerTrading.GUI
 
         public void SetToTradeAccepted(bool accepted)
         {
-            _toTradeWindow.SetAsAccepted(accepted);
+            _toTradeWindow!.SetAsAccepted(accepted);
             if (accepted)
             {
-                _acceptTradeButton.SetText(PlayerTradingMain.Localization.ChangeTradeButtonText);
+                _acceptTradeButton!.SetText(PlayerTradingMain.Localization?.ChangeTradeButtonText!);
                 _acceptTradeButton.SetOnClickAction(ChangeButtonClicked);
             }
             else
             {
-                _acceptTradeButton.SetText(PlayerTradingMain.Localization.AcceptTradeButtonText);
+                _acceptTradeButton!.SetText(PlayerTradingMain.Localization?.AcceptTradeButtonText!);
                 _acceptTradeButton.SetOnClickAction(AcceptButtonClicked);
             }       
         }
 
         public void SetToReceiveAccepted(bool accepted)
         {
-            _toReceiveWindow.SetAsAccepted(accepted);
+            _toReceiveWindow!.SetAsAccepted(accepted);
         }
 
         protected override void Init()
@@ -100,13 +100,13 @@ namespace PlayerTrading.GUI
         private void InitialiseWindows()
         {
             _toReceiveWindow = gameObject.AddComponent<PreviewTradeWindow>();
-            _toReceiveWindow.Initialise(PlayerTradingMain.Localization.ToReceiveWindowText, TradeWindow.WindowPositionType.RIGHT);
-            _toReceiveWindow.SetUserOffsets(PlayerTradingMain.ToReceiveUserOffset.Value.x, PlayerTradingMain.ToReceiveUserOffset.Value.y);
+            _toReceiveWindow.Initialise(PlayerTradingMain.Localization?.ToReceiveWindowText!, TradeWindow.WindowPositionType.RIGHT);
+            _toReceiveWindow.SetUserOffsets(PlayerTradingMain.ToReceiveUserOffset!.Value.x, PlayerTradingMain.ToReceiveUserOffset.Value.y);
             _toReceiveWindow.Hide();
 
             _toTradeWindow = gameObject.AddComponent<ContainerTradeWindow>();
-            _toTradeWindow.Initialise(PlayerTradingMain.Localization.ToGiveWindowText, TradeWindow.WindowPositionType.LEFT);
-            _toTradeWindow.SetUserOffsets(PlayerTradingMain.ToGiveUserOffset.Value.x, PlayerTradingMain.ToGiveUserOffset.Value.y);
+            _toTradeWindow.Initialise(PlayerTradingMain.Localization?.ToGiveWindowText!, TradeWindow.WindowPositionType.LEFT);
+            _toTradeWindow.SetUserOffsets(PlayerTradingMain.ToGiveUserOffset!.Value.x, PlayerTradingMain.ToGiveUserOffset.Value.y);
             _toTradeWindow.Hide();  
 
         }
@@ -114,9 +114,9 @@ namespace PlayerTrading.GUI
         private void InitialiseButtons()
         {
             _acceptTradeButton = gameObject.AddComponent<TradeButton>();
-            _acceptTradeButton.Init(PlayerTradingMain.Localization.AcceptTradeButtonText, AcceptButtonClicked, PlayerTradingMain.AcceptButtonUserOffset, _toTradeWindow.GetUIGroupHandler(), "JoyButtonX", "X", 0f, (Screen.height / (30f)));
+            _acceptTradeButton.Init(PlayerTradingMain.Localization?.AcceptTradeButtonText!, AcceptButtonClicked, PlayerTradingMain.AcceptButtonUserOffset!, _toTradeWindow!.GetUIGroupHandler(), "JoyButtonX", "X", 0f, (Screen.height / (30f)));
             _cancelTradeButton = gameObject.AddComponent<TradeButton>();
-            _cancelTradeButton.Init(PlayerTradingMain.Localization.CancelTradeButtonText, CancelButtonClicked, PlayerTradingMain.CancelButtonUserOffset, _toTradeWindow.GetUIGroupHandler(), "JoyButtonB", "B", 0f, -(Screen.height / (30f)));
+            _cancelTradeButton.Init(PlayerTradingMain.Localization?.CancelTradeButtonText!, CancelButtonClicked, PlayerTradingMain.CancelButtonUserOffset!, _toTradeWindow.GetUIGroupHandler(), "JoyButtonB", "B", 0f, -(Screen.height / (30f)));
         }
 
         private void AcceptButtonClicked()
@@ -138,12 +138,12 @@ namespace PlayerTrading.GUI
         {
             _windowMode = TradeWindowMode.TRADE_INSTANCE;
             InventoryGui.instance.m_animator.speed = 9999f;
-            _toReceiveWindow.ResetForNewInstance();
+            _toReceiveWindow!.ResetForNewInstance();
             _toReceiveWindow.Show();
-            _toTradeWindow.ResetForNewInstance();
+            _toTradeWindow!.ResetForNewInstance();
             _toTradeWindow.Show();
-            _acceptTradeButton.SetActive(true);
-            _cancelTradeButton.SetActive(true);
+            _acceptTradeButton!.SetActive(true);
+            _cancelTradeButton!.SetActive(true);
             HUDTools.SetHUDsActive(false);
         }
 
@@ -156,21 +156,21 @@ namespace PlayerTrading.GUI
         public void CancelInstance()
         {
             _windowMode = TradeWindowMode.NONE;
-            _acceptTradeButton.SetActive(false);
-            _cancelTradeButton.SetActive(false);
-            _toReceiveWindow.OnTradeCancelled();
-            _toTradeWindow.OnTradeCancelled();
+            _acceptTradeButton!.SetActive(false);
+            _cancelTradeButton!.SetActive(false);
+            _toReceiveWindow!.OnTradeCancelled();
+            _toTradeWindow!.OnTradeCancelled();
             SetToTradeAccepted(false);
             SetToReceiveAccepted(false);
         }
 
-        public Inventory GetToTradeInventory() => _toTradeWindow.GetInventory();
+        public Inventory GetToTradeInventory() => _toTradeWindow!.GetInventory();
 
-        public Inventory GetToReceiveInventory() => _toReceiveWindow.GetInventory();
+        public Inventory GetToReceiveInventory() => _toReceiveWindow!.GetInventory();
 
         public void RefreshToReceiveWindow()
         {
-            _toReceiveWindow.Refresh();
+            _toReceiveWindow!.Refresh();
         }
     }
 }

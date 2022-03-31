@@ -5,8 +5,8 @@ namespace PlayerTrading
 {
     public static class HUDTools
     {
-        private static GameObject _craftingHUD;
-        private static GameObject _infoHUD;
+        private static GameObject? _craftingHUD;
+        private static GameObject? _infoHUD;
         private static Dictionary<GameObject, bool> _states = new Dictionary<GameObject, bool>();
 
         public static void SetHUDsActive(bool active)
